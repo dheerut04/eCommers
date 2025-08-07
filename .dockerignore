@@ -1,0 +1,11 @@
+# Ignore node_modules and build files for the frontend
+frontend/ecommers/node_modules
+frontend/ecommers/build
+
+# Ignore Docker-related files
+.dockerignore
+docker-compose.yml
+
+# Ignore Git-related files
+.git
+.gitignore
