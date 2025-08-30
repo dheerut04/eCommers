@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import products from "../products";
+// import products from "../products";
 import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,12 +12,9 @@ function HomeScreen() {
     (state) => state.productList
   );
   useEffect(() => {
-    async function fetchProduct() {
-      dispatch(listProducts());
-      // setProducts(data);
-    }
-    fetchProduct();
+    dispatch(listProducts());
   }, []);
+
   return (
     <div>
       <h1>Lstest Products</h1>

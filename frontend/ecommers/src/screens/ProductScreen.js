@@ -4,6 +4,10 @@ import { Link, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { listProductDetails } from "../actions/productActions";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 function ProductScreen() {
   const { id } = useParams();
@@ -18,62 +22,81 @@ function ProductScreen() {
   //     fetchProduct();
   //   }, []);
 
-  const product = products.find((p) => p._id === id);
+  const dispatch = useDispatch();
+  const { loading, product, error } = useSelector(
+    (state) => state.productDetails
+  );
+
+  useEffect(() => {
+    dispatch(listProductDetails(id));
+  });
+
   return (
     <div>
       <Link to="/" className="btn btn-light my-3">
         Go Back
       </Link>
-      <Row>
-        <Col md={6}>
-          <Image src={product.image} />
-        </Col>
-        <Col md={3}>
-          <ListGroup variant="flush">
-            <ListGroup.Item>
-              <h3>{product.name}</h3>
-            </ListGroup.Item>
 
-            <ListGroup.Item>
-              <Rating
-                value={product.rating}
-                text={`${product.numReviews} reviews`}
-                color={"#f8e825"}
-              />
-            </ListGroup.Item>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message>{error}</Message>
+      ) : (
+        <Row>
+          <Col md={6}>
+            <Image src={product.image} />
+          </Col>
+          <Col md={3}>
+            <ListGroup variant="flush">
+              <ListGroup.Item>
+                <h3>{product.name}</h3>
+              </ListGroup.Item>
 
-            <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
+              <ListGroup.Item>
+                <Rating
+                  value={product.rating}
+                  text={`${product.numReviews} reviews`}
+                  color={"#f8e825"}
+                />
+              </ListGroup.Item>
 
-            <ListGroup.Item>Description: {product.description}</ListGroup.Item>
-          </ListGroup>
-        </Col>
+              <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
 
-        <Col md={3}>
-          <ListGroup>
-            <ListGroup.Item>
-              <Row>
-                <Col>Price: </Col>
-                <Col>
-                  <strong>${product.price}</strong>
-                </Col>
-              </Row>
-            </ListGroup.Item>
+              <ListGroup.Item>
+                Description: {product.description}
+              </ListGroup.Item>
+            </ListGroup>
+          </Col>
 
-            <ListGroup.Item>
-              <Row>
-                <Col>Status:</Col>
-                <Col>
-                  {product.countInStock > 0 ? "In stock" : "Out of Stock"}
-                </Col>
-              </Row>
-            </ListGroup.Item>
+          <Col md={3}>
+            <ListGroup>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Price: </Col>
+                  <Col>
+                    <strong>${product.price}</strong>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
 
-            <ListGroup.Item style={{ alignSelf: "center" }}>
-              <Button disabled={product.countInStock === 0}>Add to Cart</Button>
-            </ListGroup.Item>
-          </ListGroup>
-        </Col>
-      </Row>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Status:</Col>
+                  <Col>
+                    {product.countInStock > 0 ? "In stock" : "Out of Stock"}
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item style={{ alignSelf: "center" }}>
+                <Button disabled={product.countInStock === 0}>
+                  Add to Cart
+                </Button>
+              </ListGroup.Item>
+            </ListGroup>
+          </Col>
+        </Row>
+      )}
     </div>
   );
 }
