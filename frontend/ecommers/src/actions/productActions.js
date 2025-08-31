@@ -12,10 +12,12 @@ export const listProducts = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_LOADING });
 
-    const { data } = await axios.get("/api/products/");
+    console.log("list: ");
+
+    const { data } = await axios.get(`/api/products/`);
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
-      action: data,
+      payload: data,
     });
   } catch (error) {
     dispatch({
@@ -31,11 +33,19 @@ export const listProducts = () => async (dispatch) => {
 export const listProductDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_LOADING });
-    const { data } = await axios.get(`/api/products/${id}`);
-    dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
+    console.log("details: ");
+    const { data } = await axios.get(`/api/product/${id}`);
+    dispatch({
+      type: PRODUCT_DETAILS_SUCCESS,
+      payload: data,
+    });
   } catch (error) {
-    dispatch({ type: PRODUCT_DETAILS_FAILED, payload: error });
+    dispatch({
+      type: PRODUCT_DETAILS_FAILED,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
   }
 };
-
-export default listProducts;
