@@ -2,7 +2,6 @@ import { Col, Row, ListGroup, Image, Button } from "react-bootstrap";
 import products from "../products";
 import { Link, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { listProductDetails } from "../actions/productActions";
@@ -28,8 +27,9 @@ function ProductScreen() {
   );
 
   useEffect(() => {
+    console.log("calling: ");
     dispatch(listProductDetails(id));
-  });
+  }, []);
 
   return (
     <div>
@@ -40,62 +40,64 @@ function ProductScreen() {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message>{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
-        <Row>
-          <Col md={6}>
-            <Image src={product.image} />
-          </Col>
-          <Col md={3}>
-            <ListGroup variant="flush">
-              <ListGroup.Item>
-                <h3>{product.name}</h3>
-              </ListGroup.Item>
+        product && (
+          <Row>
+            <Col md={6}>
+              <Image src={product?.image} />
+            </Col>
+            <Col md={3}>
+              <ListGroup variant="flush">
+                <ListGroup.Item>
+                  <h3>{product?.name}</h3>
+                </ListGroup.Item>
 
-              <ListGroup.Item>
-                <Rating
-                  value={product.rating}
-                  text={`${product.numReviews} reviews`}
-                  color={"#f8e825"}
-                />
-              </ListGroup.Item>
+                <ListGroup.Item>
+                  <Rating
+                    value={product.rating}
+                    text={`${product.numReviews} reviews`}
+                    color={"#f8e825"}
+                  />
+                </ListGroup.Item>
 
-              <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
+                <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
 
-              <ListGroup.Item>
-                Description: {product.description}
-              </ListGroup.Item>
-            </ListGroup>
-          </Col>
+                <ListGroup.Item>
+                  Description: {product.description}
+                </ListGroup.Item>
+              </ListGroup>
+            </Col>
 
-          <Col md={3}>
-            <ListGroup>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Price: </Col>
-                  <Col>
-                    <strong>${product.price}</strong>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
+            <Col md={3}>
+              <ListGroup>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Price: </Col>
+                    <Col>
+                      <strong>${product.price}</strong>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
 
-              <ListGroup.Item>
-                <Row>
-                  <Col>Status:</Col>
-                  <Col>
-                    {product.countInStock > 0 ? "In stock" : "Out of Stock"}
-                  </Col>
-                </Row>
-              </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Status:</Col>
+                    <Col>
+                      {product.countInStock > 0 ? "In stock" : "Out of Stock"}
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
 
-              <ListGroup.Item style={{ alignSelf: "center" }}>
-                <Button disabled={product.countInStock === 0}>
-                  Add to Cart
-                </Button>
-              </ListGroup.Item>
-            </ListGroup>
-          </Col>
-        </Row>
+                <ListGroup.Item style={{ alignSelf: "center" }}>
+                  <Button disabled={product.countInStock === 0}>
+                    Add to Cart
+                  </Button>
+                </ListGroup.Item>
+              </ListGroup>
+            </Col>
+          </Row>
+        )
       )}
     </div>
   );

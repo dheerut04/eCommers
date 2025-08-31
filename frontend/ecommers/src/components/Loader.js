@@ -1,6 +1,8 @@
 import { Spinner } from "react-bootstrap";
 
 function Loader() {
+  console.log("load: ");
+
   return (
     <Spinner
       animation="border"
