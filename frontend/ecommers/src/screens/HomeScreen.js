@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 // import products from "../products";
 import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+
 function HomeScreen() {
   const dispatch = useDispatch();
   const { loading, products, error } = useSelector(
