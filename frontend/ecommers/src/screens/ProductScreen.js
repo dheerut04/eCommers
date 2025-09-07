@@ -1,8 +1,8 @@
 import { Col, Row, ListGroup, Image, Button } from "react-bootstrap";
-import products from "../products";
+// import products from "../products";
 import { Link, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { listProductDetails } from "../actions/productActions";
 import Loader from "../components/Loader";
