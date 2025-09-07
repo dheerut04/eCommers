@@ -11,7 +11,7 @@ import Message from "../components/Message";
 function ProductScreen() {
   const { id } = useParams();
 
-  //   const [product, setProduct] = useState([]);
+  //   const [product, setProduct] = useState([]); small
 
   //   useEffect(() => {
   //     async function fetchProduct() {
